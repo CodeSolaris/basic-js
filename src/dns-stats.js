@@ -22,11 +22,35 @@ const { NotImplementedError } = require('../extensions/index.js');
  * }
  *
  */
-function getDNSStats(/* domains */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+
+function getDNSStats(domains) {
+  const dnsStats = {};
+
+  domains.forEach(domain => {
+    // Разделяем домен на части и инвертируем порядок
+    const levels = domain.split('.').reverse();
+
+    let dns = '';
+    levels.forEach(level => {
+      // Создаём текущий уровень домена
+      dns += `.${level}`;
+      // Если уровень уже есть в объекте, увеличиваем его счётчик
+      if (dnsStats[dns]) {
+        dnsStats[dns]++;
+      } else {
+        // Если уровня нет, добавляем его с начальным значением 1
+        dnsStats[dns] = 1;
+      }
+    });
+  });
+
+  return dnsStats;
 }
+
+
+
 
 module.exports = {
   getDNSStats
 };
+
